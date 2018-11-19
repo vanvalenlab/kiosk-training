@@ -102,7 +102,7 @@ if __name__ == '__main__':
 
     except Exception as err:
         redis.hmset(training_hash, {
-            'reason': err,
+            'reason': '{}'.format(err),
             'status': 'failed'
         })
         sys.exit(1)
