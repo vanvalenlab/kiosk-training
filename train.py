@@ -59,6 +59,8 @@ def initialize_logger(debug_mode=False):
 if __name__ == '__main__':
     initialize_logger(settings.DEBUG)
 
+    logger = logging.getLogger(__file__)
+
     storage_client = utils.get_storage_client(settings.CLOUD_PROVIDER)
 
     redis = StrictRedis(
@@ -96,11 +98,18 @@ if __name__ == '__main__':
                 'status': 'training'
             })
 
+            logger.debug('Updated model %s status to "training"', model_name)
+
             result = utils.run_notebook(notebook_path)
 
-            redis.expire(training_hash, 60)
+            redis.delete(training_hash)
+
+            logger.info('deleted hash')
 
     except Exception as err:
+        logger.error('Encountered %s during training: %s',
+                     type(err).__name__, err)
+
         redis.hmset(training_hash, {
             'reason': '{}'.format(err),
             'status': 'failed'
