@@ -137,7 +137,7 @@ def run_notebook(notebook_path):
         logger.error('%s:\n%s', err, err.stdout)
         raise Exception('{} : {}'.format(err, err.stdout))
 
-    for log in output.split('\n'):
-        logger.debug('%s', log)
+    for log in output.decode('utf-8').split('\n'):
+        logger.debug(log)
 
     return output
