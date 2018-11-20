@@ -134,10 +134,10 @@ def run_notebook(notebook_path):
     try:
         output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError as err:
-        logger.error('%s:\n%s', err, err.stdout)
-        raise Exception('{} : {}'.format(err, err.stdout))
+        logger.error('Encountered error while running the notebook: %s', err)
+        raise Exception('{} : {}'.format(err, err.stdout.decode('utf-8')))
 
-    for log in output.decode('utf-8').split('\n'):
-        logger.debug(log)
+    output = output.decode('utf-8')  # convert output bytes to string
+    logger.debug('Subprocess Output: %s', output)
 
     return output
