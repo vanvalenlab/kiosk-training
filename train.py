@@ -81,7 +81,7 @@ if __name__ == '__main__':
             local_path = storage_client.download(data_path, tempdir)
 
             model_name = '{ts}_{dataset}_{type}_{transform}'.format(
-                ts=datetime.datetime.now().strftime('%Y-%m-%d'),
+                ts=datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S'),
                 dataset=os.path.splitext(os.path.basename(local_path))[0],
                 type=hash_values.get('training_type', 'conv'),
                 transform=hash_values.get('transform', 'watershed'))
