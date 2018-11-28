@@ -102,9 +102,9 @@ if __name__ == '__main__':
 
             result = utils.run_notebook(notebook_path)
 
-            redis.delete(training_hash)
+            redis.expire(training_hash, 10)
 
-            logger.info('deleted hash')
+            exit_status = 0
 
     except Exception as err:
         logger.error('Encountered %s during training: %s',
@@ -114,6 +114,8 @@ if __name__ == '__main__':
             'reason': '{}'.format(err),
             'status': 'failed'
         })
-        sys.exit(1)
+        redis.expire(training_hash, 10)
+        exit_status = 1
 
-    sys.exit(0)  # successfully exit
+    logger.info('Exiting with status: %s', exit_status)
+    sys.exit(exit_status)
