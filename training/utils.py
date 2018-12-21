@@ -31,10 +31,7 @@ from __future__ import print_function
 import logging
 import subprocess
 
-import deepcell  # pylint: disable=E0401
-
 from training import settings
-from training import storage
 
 
 logger = logging.getLogger('training.utils')
@@ -63,24 +60,6 @@ def get_hash_with_status(redis, status='new'):
     return None
 
 
-def get_storage_client(cloud_provider):
-    """Returns the Storage Client appropriate for the cloud provider
-    # Arguments:
-        cloud_provider: Indicates which cloud platform (AWS vs GKE)
-    # Returns:
-        storage_client: Client for interacting with the cloud.
-    """
-    if cloud_provider == 'aws':
-        storage_client = storage.S3Storage(settings.AWS_S3_BUCKET)
-    elif cloud_provider == 'gke':
-        storage_client = storage.GoogleStorage(settings.GCLOUD_STORAGE_BUCKET)
-    else:
-        errmsg = 'Bad value for CLOUD_PROVIDER: %s'
-        logger.error(errmsg, cloud_provider)
-        raise ValueError(errmsg % cloud_provider)
-    return storage_client
-
-
 def make_notebook(data, **kwargs):
     """Use the training parameters to create a deepcell training notebook
     # Arguments:
@@ -91,7 +70,8 @@ def make_notebook(data, **kwargs):
         raise ValueError('`data` is required to download training data')
 
     try:
-        notebook_path = deepcell.notebooks.train.make_notebook(
+        from deepcell.notebooks import train
+        notebook_path = train.make_notebook(
             data,
             model_name=kwargs.get('model_name'),
             train_type=kwargs.get('training_type', 'conv'),

@@ -37,6 +37,7 @@ import tempfile
 from redis import StrictRedis
 
 from training import settings
+from training import storage
 from training import utils
 
 
@@ -61,7 +62,7 @@ if __name__ == '__main__':
 
     _logger = logging.getLogger(__file__)
 
-    storage_client = utils.get_storage_client(settings.CLOUD_PROVIDER)
+    storage_client = storage.get_client(settings.CLOUD_PROVIDER)
 
     redis = StrictRedis(
         host=settings.REDIS_HOST,

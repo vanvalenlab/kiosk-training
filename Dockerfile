@@ -1,4 +1,4 @@
-FROM vanvalenlab/deepcell-tf:0.1dev
+FROM vanvalenlab/deepcell-tf:0.1
 
 WORKDIR /kiosk/training
 
