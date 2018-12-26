@@ -38,9 +38,11 @@ logger = logging.getLogger('training.utils')
 
 
 def get_hash_with_status(redis, status='new'):
-    """Iterate over hash values in redis,
-    yielding each with a status equal to watch_status
-    # Returns: Iterator of all hashes with a valid status
+    """Iterate over hash values in redis.
+    Yield each hash with a status equal to `watch_status`.
+
+    Returns:
+        Iterator of all hashes with a valid status
     """
     try:
         keys = redis.keys()
@@ -61,8 +63,9 @@ def get_hash_with_status(redis, status='new'):
 
 
 def make_notebook(data, **kwargs):
-    """Use the training parameters to create a deepcell training notebook
-    # Arguments:
+    """Use the training parameters to create a deepcell training notebook.
+
+    Args:
         data: the path to the properly formatted directory of data
         kwargs: named key/value pairs from the redis hash
     """
@@ -98,8 +101,9 @@ def make_notebook(data, **kwargs):
 
 
 def run_notebook(notebook_path):
-    """Create a training notebook with deepcell and run it
-    # Arguments:
+    """Create a training notebook with deepcell and run it.
+
+    Args:
         notebook_path: path to generated training notebook
     """
     cmd = [
